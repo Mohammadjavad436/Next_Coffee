@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
-import "@/styles/globals.css";
+import './global.css'
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import { config } from "@fortawesome/fontawesome-svg-core";
+config.autoAddCss = false;
+
 
 export const metadata: Metadata = {
   title: "Coffee Verna",
@@ -12,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="fa" dir="rtl">
       <link rel="icon" href="/favicon.ico" sizes="any" />
       <body>
         {children}
