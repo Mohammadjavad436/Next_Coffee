@@ -1,0 +1,23 @@
+.bannerContainer {
+  width: 100%;
+  height: 90vh;
+  position: relative;
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+/* swiper */
+.mySwiper {
+  width: 100%;
+  height: 100%;
+}
+
+.mySwiper :global(.swiper-button-prev:after),
+.mySwiper :global(.swiper-button-next:after) {
+  font-size: 26px !important;
+  color: #070707 !important;
+  font-weight: 1000;
+}
