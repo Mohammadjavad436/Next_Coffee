@@ -8,7 +8,7 @@ import {
 
 function Navbar() {
   return (
-    <nav className='fixed w-full mt-7 flex items-center justify-center   z-10'>
+    <nav className='fixed z-50 w-full mt-7 flex items-center justify-center   z-10'>
       <main className='flex items-center  justify-center bg-[#F5F0E6]  shadow-lg'>
         {/* logo coffee */}
         <div>
