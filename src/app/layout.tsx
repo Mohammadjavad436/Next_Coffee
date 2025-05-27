@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import './global.css'
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
+import Aos from "@/utility/aos";
 config.autoAddCss = false;
 
 
@@ -21,6 +22,7 @@ export default function RootLayout({
   return (
     <html lang="fa" dir="rtl">
       <body>
+        <Aos />
         {children}
       </body>
     </html>
