@@ -3,6 +3,7 @@ import './global.css'
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import Aos from "@/utility/aos";
+import ScrollToTopButton from "@/utility/ScrollToTop";
 config.autoAddCss = false;
 
 
@@ -24,6 +25,7 @@ export default function RootLayout({
       <body>
         <Aos />
         {children}
+        <ScrollToTopButton />
       </body>
     </html>
   );

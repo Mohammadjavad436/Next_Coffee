@@ -1,15 +1,34 @@
+"use client"
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHeart, faShuffle, faCartShopping, faAngleDown
 } from "@fortawesome/free-solid-svg-icons";
 
 function Navbar() {
+  const [fixToTop, setFixToTop] = useState(false)
+
+  useEffect(() => {
+
+    const handleFixToTop = () => {
+      if (window.scrollY > 111) {
+        setFixToTop(true)
+      } else {
+        setFixToTop(false)
+      }
+    }
+    window.addEventListener('scroll', handleFixToTop)
+
+    return () => removeEventListener('scroll', handleFixToTop)
+
+  }, [])
+
+
   return (
-    <nav className='fixed z-50 w-full mt-7 flex items-center justify-center   z-10'>
-      <main className='flex items-center  justify-center bg-[#F5F0E6]  shadow-lg'>
+    <nav className={`fixed z-50 w-full   duration-300 transition-all  ${fixToTop ? 'mt-0 bg-[#F5F0E6]' : 'mt-7'} flex items-center justify-center `}>
+      <main className={`flex items-center  justify-center bg-[#F5F0E6]    ${fixToTop ? '' : 'shadow-lg '} `}>
         {/* logo coffee */}
         <div>
           <Link href={'/'}>
@@ -66,9 +85,9 @@ function Navbar() {
         {/* account link */}
         <div className='flex px-10 gap-x-6 justify-center items-center'>
           <div className='flex justify-center items-center gap-x-2'>
-            <Link href={''}>ورود</Link >
+            <Link href={'/login-register'}>ورود</Link >
             <span> {'/'}</span>
-            <Link href={''}> عضویت</Link >
+            <Link href={'/login-register'}> عضویت</Link >
           </div>
           <div className='flex items-center justify-center gap-x-7'>
             <Link className='relative' href={''}>
