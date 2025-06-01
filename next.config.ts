@@ -3,8 +3,20 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   images: {
-    domains: ["neurosciencenews.com", "set-coffee.com", "secure.gravatar.com"],
-
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'neurosciencenews.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'set-coffee.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'secure.gravatar.com',
+      },
+    ],
   },
 };
 

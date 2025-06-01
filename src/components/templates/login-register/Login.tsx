@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import Link from "next/link";
+import { redirect, } from "next/navigation";
 import Sms from "./Sms";
+import showSwal from '@/utility/helper'
+import { validateEmail, validatePassword } from "@/utility/auth";
 
 
 
@@ -10,6 +13,11 @@ type TPLogin = {
 
 const Login = ({ showRegisterForm }: TPLogin) => {
   const [isShowOtpInput, setIsShowOtpInput] = useState(false)
+  const [emailOrPhone, setEmailOrPhone] = useState('')
+  const [password, setPassword] = useState('')
+
+
+
 
 
   const handleShowOtp = () => {
@@ -18,8 +26,52 @@ const Login = ({ showRegisterForm }: TPLogin) => {
 
   const handleBackLogin = () => {
     setIsShowOtpInput(false)
-    console.log(isShowOtpInput)
   }
+
+
+  const handleLogin = async () => {
+
+    if (!emailOrPhone) {
+      return showSwal('ایمیل یا شماره را وارد نمایید', 'warning', 'تلاش دوباره')
+    }
+
+    const validEmail = validateEmail(emailOrPhone)
+
+    if (!validEmail) {
+      return showSwal('ایمیل صحیح وارد کنید', 'warning', 'تلاش دوباره')
+    }
+
+    if (!password) {
+      return showSwal('رمز عبور را وارد نمایید', 'warning', 'تلاش دوباره')
+    }
+    const validPassword = validatePassword(password)
+    if (!validPassword) {
+      return showSwal('رمز عبور صحیح وارد کنید', 'warning', 'تلاش دوباره')
+    }
+    console.log(emailOrPhone, password)
+    try {
+      const res = await fetch('/api/auth/signIn', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: emailOrPhone,
+          password: password,
+        }),
+      });
+
+      if (res.ok) {
+        showSwal('ورود با موفقیت انجام شد', 'success', 'بازگشت به صفحه اصلی', () => { redirect('/') });
+        return;
+      } else {
+        showSwal('ایمیل یا رمز عبور اشتباه است', 'error', 'تلاش مجدد');
+      }
+    } catch (error) {
+      showSwal('خطا در ورود', 'error', 'تلاش مجدد');
+    }
+  }
+
 
   return (
     isShowOtpInput ? (
@@ -34,11 +86,15 @@ const Login = ({ showRegisterForm }: TPLogin) => {
                 className="font-shabnam p-3.5 bg-white text-black rounded border border-black rtl mt-5"
                 type="text"
                 placeholder="ایمیل/شماره موبایل"
+                value={emailOrPhone}
+                onChange={(e) => setEmailOrPhone(e.target.value)}
               />
               <input
                 className="font-shabnam p-3.5 bg-white text-black rounded border border-black rtl mt-5"
                 type="password"
                 placeholder="رمز عبور"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <div className="flex mt-5 mb-2.5 justify-end flex-row-reverse items-center gap-1.5">
                 <input
@@ -47,7 +103,7 @@ const Login = ({ showRegisterForm }: TPLogin) => {
                 />
                 <p className="text-sm font-shabnam">مرا به یاد داشته باش</p>
               </div>
-              <button className="p-3 cursor-pointer font-shabnam bg-[#34180e] text-white">ورود</button>
+              <button onClick={handleLogin} className="p-3 cursor-pointer font-shabnam bg-[#34180e] text-white">ورود</button>
               <Link href={"/forget-password"} className="text-sm my-4 cursor-pointer">
                 رمز عبور را فراموش کرده اید؟
               </Link>
