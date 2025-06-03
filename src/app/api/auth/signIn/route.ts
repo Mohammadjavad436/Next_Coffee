@@ -28,10 +28,10 @@ export async function POST(req: Request) {
         }
 
 
-        const accessToken = generateAccessToken(email)
+        const accessToken = await generateAccessToken(email)
 
 
-        const refreshToken = generateRefreshToken(email)
+        const refreshToken = await generateRefreshToken(email)
 
         if (refreshToken) {
             await userModel.findOneAndUpdate({ email }, {

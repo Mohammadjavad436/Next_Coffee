@@ -1,5 +1,5 @@
 import { hash, compare } from "bcryptjs";
-import { sign, verify, JwtPayload } from "jsonwebtoken";
+import { SignJWT, jwtVerify, JWTPayload } from "jose";
 
 const hashPassword = async (password: string): Promise<string> => {
     const hashedPassword = await hash(password, 12);
@@ -11,32 +11,38 @@ const verifyPassword = async (password: string, hashedPassword: string): Promise
     return isValid;
 };
 
-interface TokenData {
+export interface TokenData {
     userId: string;
-    [key: string]: unknown;
+    email: string;
+    role: string;
 }
 
-const generateAccessToken = (data: TokenData): string => {
-    const token = sign({ ...data }, process.env.AccessTokenSecretKey!, {
-        expiresIn: "60s",
-    });
+const generateAccessToken = async (data: TokenData): Promise<string> => {
+    const secret = new TextEncoder().encode(process.env.AccessTokenSecretKey!);
+    const token = await new SignJWT({ ...data })
+        .setProtectedHeader({ alg: 'HS256' })
+        .setExpirationTime('1h')
+        .sign(secret);
     return token;
 };
 
-const verifyAccessToken = (token: string): JwtPayload | false => {
+const verifyAccessToken = async (token: string): Promise<JWTPayload | false> => {
     try {
-        const tokenPayload = verify(token, process.env.AccessTokenSecretKey!);
-        return tokenPayload as JwtPayload;
+        const secret = new TextEncoder().encode(process.env.AccessTokenSecretKey!);
+        const { payload } = await jwtVerify(token, secret);
+        return payload;
     } catch (err) {
         console.log("Verify Access Token Error ->", err);
         return false;
     }
 };
 
-const generateRefreshToken = (data: TokenData): string => {
-    const token = sign({ ...data }, process.env.RefreshTokenSecretKey!, {
-        expiresIn: "15d",
-    });
+const generateRefreshToken = async (data: TokenData): Promise<string> => {
+    const secret = new TextEncoder().encode(process.env.RefreshTokenSecretKey!);
+    const token = await new SignJWT({ ...data })
+        .setProtectedHeader({ alg: 'HS256' })
+        .setExpirationTime('15d')
+        .sign(secret);
     return token;
 };
 
@@ -54,6 +60,16 @@ const validatePassword = (password: string): boolean => {
 const validateEmail = (email: string): boolean => {
     const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/g;
     return pattern.test(email);
+}
+
+export interface AuthResponse {
+    message: string;
+    user?: {
+        name: string;
+        email: string;
+        role: string;
+    };
+    valid?: boolean;
 }
 
 export {

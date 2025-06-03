@@ -17,9 +17,6 @@ const Login = ({ showRegisterForm }: TPLogin) => {
   const [password, setPassword] = useState('')
 
 
-
-
-
   const handleShowOtp = () => {
     setIsShowOtpInput(true)
   }
@@ -48,7 +45,6 @@ const Login = ({ showRegisterForm }: TPLogin) => {
     if (!validPassword) {
       return showSwal('رمز عبور صحیح وارد کنید', 'warning', 'تلاش دوباره')
     }
-    console.log(emailOrPhone, password)
     try {
       const res = await fetch('/api/auth/signIn', {
         method: 'POST',
