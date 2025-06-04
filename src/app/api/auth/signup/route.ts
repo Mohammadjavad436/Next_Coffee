@@ -52,7 +52,7 @@ export async function POST(req: Request) {
                 { email: { $exists: true, $ne: '', $eq: email } }
             ]
         });
-        console.log('Existing user check result:', isUserExist)
+
 
         if (isUserExist) {
             return Response.json(
@@ -75,7 +75,11 @@ export async function POST(req: Request) {
             role: users.length > 0 ? roles.USER : roles.ADMIN,
         });
 
-        const accessToken = generateAccessToken({ name, userId: newUser._id });
+        const accessToken = generateAccessToken({
+            userId: newUser._id,
+            email: newUser.email,
+            role: newUser.role
+        });
 
         return Response.json(
             { message: "User signed up successfully :))" },

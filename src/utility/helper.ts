@@ -1,18 +1,26 @@
-import swal from "sweetalert";
+import Swal from "sweetalert2";
 
+type SwalIcon = "success" | "error" | "warning" | "info" | "question";
 
-const showSwal = (title: string, icon: string, button: string, onButtonClick?: () => void) => {
-    return swal({
+const showSwal = (
+    title: string,
+    icon: SwalIcon,
+    button: string,
+    onButtonClick?: () => void
+) => {
+    return Swal.fire({
         title,
         icon,
-        // @ts-expect-error - button is a valid property in sweetalert
-        button,
-    }).then(() => {
-        if (onButtonClick) {
-            onButtonClick();
-        }
-    });
+        confirmButtonText: button,
+    })
+        .then(() => {
+            if (onButtonClick) {
+                onButtonClick();
+            }
+        })
+        .catch((error) => {
+            console.error('Error showing alert:', error);
+        });
 }
 
-
-export default showSwal
+export default showSwal;
