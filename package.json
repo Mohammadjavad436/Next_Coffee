@@ -28,6 +28,7 @@
     "react-select": "^5.10.1",
     "recharts": "^2.15.3",
     "sweetalert": "^2.1.2",
+    "sweetalert2": "^11.22.0",
     "swiper": "^11.2.6"
   },
   "devDependencies": {

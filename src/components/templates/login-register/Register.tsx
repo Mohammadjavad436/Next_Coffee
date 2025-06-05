@@ -46,7 +46,6 @@ const Register = ({ showLoginForm }: TPRegister) => {
     const isValidEmail = validateEmail(email)
 
     if (email.length > 0 && !isValidEmail) {
-      console.log('email lenght')
       return showSwal('ایمیل  خود را به درستی وارد نمایید', 'error', 'تلاش مجدد')
     }
 

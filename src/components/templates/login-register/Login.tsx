@@ -57,7 +57,13 @@ const Login = ({ showRegisterForm }: TPLogin) => {
         }),
       });
 
+      const data = await res.json();
+
       if (res.ok) {
+        // Store refresh token in localStorage
+        if (data.refreshToken) {
+          localStorage.setItem('refreshToken', data.refreshToken);
+        }
         showSwal('ورود با موفقیت انجام شد', 'success', 'بازگشت به صفحه اصلی', () => { redirect('/') });
         return;
       } else {

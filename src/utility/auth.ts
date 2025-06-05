@@ -1,5 +1,5 @@
 import { hash, compare } from "bcryptjs";
-import { SignJWT, jwtVerify, JWTPayload } from "jose";
+import { SignJWT, jwtVerify, JWTPayload, errors } from "jose";
 
 const hashPassword = async (password: string): Promise<string> => {
     const hashedPassword = await hash(password, 12);
@@ -32,7 +32,21 @@ const verifyAccessToken = async (token: string): Promise<JWTPayload | false> => 
         const { payload } = await jwtVerify(token, secret);
         return payload;
     } catch (err) {
+        if (err instanceof errors.JWTExpired) {
+            return false;
+        }
         console.log("Verify Access Token Error ->", err);
+        return false;
+    }
+};
+
+const verifyRefreshToken = async (token: string): Promise<JWTPayload | false> => {
+    try {
+        const secret = new TextEncoder().encode(process.env.RefreshTokenSecretKey!);
+        const { payload } = await jwtVerify(token, secret);
+        return payload;
+    } catch (err) {
+        console.log("Verify Refresh Token Error ->", err);
         return false;
     }
 };
@@ -77,6 +91,7 @@ export {
     verifyPassword,
     generateAccessToken,
     verifyAccessToken,
+    verifyRefreshToken,
     generateRefreshToken,
     validatePhone,
     validateEmail,

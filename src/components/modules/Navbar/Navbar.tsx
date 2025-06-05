@@ -19,34 +19,63 @@ function Navbar({ userToken }: TPNavbar) {
   const [fixToTop, setFixToTop] = useState(false)
   const [userInfo, setUserInfo] = useState<{ name: string; email: string; role: string } | null>(null)
 
-  useEffect(() => {
-    const verifyToken = async () => {
-      if (!userToken) {
-        setUserInfo(null);
-        return;
-      }
+  const refreshToken = async () => {
+    try {
+      const res = await fetch('/api/auth/refresh', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ refreshToken: localStorage.getItem('refreshToken') }),
+      });
 
-      try {
-        const res = await fetch('/api/auth/verify', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ token: userToken }),
-        });
-
+      if (res.ok) {
         const data = await res.json();
-
-        if (data.valid && data.user) {
-          setUserInfo(data.user);
+        if (data.valid) {
+          verifyToken();
         } else {
           setUserInfo(null);
+          localStorage.removeItem('refreshToken');
         }
-      } catch (error) {
+      } else {
         setUserInfo(null);
+        localStorage.removeItem('refreshToken');
       }
-    };
+    } catch (error) {
+      setUserInfo(null);
+      localStorage.removeItem('refreshToken');
+    }
+  };
 
+  const verifyToken = async () => {
+    if (!userToken) {
+      setUserInfo(null);
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/auth/verify', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token: userToken }),
+      });
+
+      const data = await res.json();
+
+      if (data.valid && data.user) {
+        setUserInfo(data.user);
+      } else {
+        // If token is invalid, try to refresh it
+        await refreshToken();
+      }
+    } catch (error) {
+      setUserInfo(null);
+    }
+  };
+
+  useEffect(() => {
     verifyToken();
   }, [userToken]);
 
