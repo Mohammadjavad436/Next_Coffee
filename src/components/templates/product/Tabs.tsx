@@ -4,12 +4,14 @@ import { useState } from "react";
 import Description from "./Description";
 import MoreInfoes from "./MoreInfoes";
 import Comments from "./Comments";
+import { TProductDetail } from "./Details";
 
-type TabType = "description" | "moreInfoes" | "comments";
+interface TabsProps {
+    productComments: TProductDetail; // Replace `Comment[]` with the actual type of your comments
+}
 
-const Tabs: React.FC = () => {
-    const [tab, setTab] = useState<TabType>("description");
-
+const Tabs = ({ productComments }: TabsProps) => {
+    const [tab, setTab] = useState("description");
     return (
         <div data-aos="fade-left" className="relative p-[50px] pb-20 w-full">
             <input
@@ -67,7 +69,7 @@ const Tabs: React.FC = () => {
                         className="transition-all duration-300 text-gray-500 text-base relative pt-5 overflow-hidden text-ellipsis block cursor-pointer font-shabnam hover:text-black"
                     >
                         {" "}
-                        نظرات (7){" "}
+                        نظرات ({productComments.comments.length}){" "}
                     </label>
                 </li>
             </ul>
@@ -89,7 +91,7 @@ const Tabs: React.FC = () => {
                     className={`font-shabnam leading-relaxed ${tab === "comments" ? "block" : "hidden"
                         } animate-[content_0.3s_ease-in-out_1]`}
                 >
-                    <Comments />
+                    <Comments allProductComments={productComments} />
                 </section>
             </div>
         </div>

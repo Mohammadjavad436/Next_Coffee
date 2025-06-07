@@ -6,16 +6,44 @@ import { FaTelegram, FaLinkedinIn, FaPinterest } from "react-icons/fa";
 import Link from "next/link";
 import Breadcrumb from "./Breadcrumb";
 
-const Details: React.FC = () => {
+export interface TComment {
+    _id: string;
+    username: string;
+    body: string;
+    email: string;
+    score: number;
+    productID: string;
+    date: string;
+    __v: number;
+}
+
+export interface TProductDetail {
+    _id: string;
+    name: string;
+    price: number;
+    shortDescription: string;
+    longDescription: string;
+    weight: number;
+    suitableFor: string;
+    smell: string;
+    score: number;
+    tags: string[];
+    comments: TComment[];
+    __v: number;
+}
+
+export interface DetailsProps {
+    productDetail: TProductDetail;
+}
+
+const Details = ({ productDetail }: DetailsProps) => {
     return (
         <main style={{ width: "63%" }}>
             <Breadcrumb
-                title={
-                    "کپسول قهوه SETpresso سازگار با دستگاه نسپرسو ( GOLD ) ده -10- عددی"
-                }
+                title={productDetail.name}
             />
             <h2>
-                کپسول قهوه SETpresso سازگار با دستگاه نسپرسو ( GOLD ) ده -10- عددی
+                {productDetail.name}
             </h2>
 
             <div className="flex gap-[9px] mt-8">
@@ -26,16 +54,14 @@ const Details: React.FC = () => {
                     <FaStar className="text-orange-500 text-[1.4rem]" />
                     <FaStar className="text-orange-500 text-[1.4rem]" />
                 </div>
-                <p>(دیدگاه 7 کاربر)</p>
+                <p>(دیدگاه {productDetail.score} کاربر)</p>
             </div>
 
             <p className="text-[rgb(52,24,14)] text-2xl font-bold mt-6 mb-6">
-                205,000 تومان
+                {productDetail.price}
             </p>
             <span className="text-[15px] block w-[93%] text-[rgb(160,151,151)]">
-                کپسول قهوه ست مدل Gold سازگار با دستگاههای کپسولی نسپرسو می باشد . ترکیب
-                این قهوه عربیکا بوده و با برشته کاری متوسط درجاتی از اسیدیته به همراه تن
-                واری متوسط , و برای ترکیب با شیر بسیار عالی می باشد.
+                {productDetail.longDescription}
             </span>
 
             <hr />
@@ -74,14 +100,11 @@ const Details: React.FC = () => {
             <hr />
 
             <div className="flex flex-col gap-[15px] mt-[30px]">
-                <strong>شناسه محصول: GOLD Nespresso Compatible capsule</strong>
+                <strong>شناسه محصول: {productDetail._id.toString()}</strong>
                 <p>
                     {" "}
-                    <strong>دسته:</strong> Coffee Capsule, کپسول قهوه, همه موارد
-                </p>
-                <p>
-                    <strong>برچسب:</strong> کپسول قهوه،کپسول قهوه ست پرسو،کپسول قهوه
-                    ایرانی،کپسول قهوه نسپرسو ایرانی،قهوه ست ، Setpresso،Gold Setpresso
+                    <strong>دسته:</strong>
+                    {productDetail.tags.join(',')}
                 </p>
             </div>
 
@@ -109,4 +132,4 @@ const Details: React.FC = () => {
     );
 };
 
-export default Details; 
+export default Details;

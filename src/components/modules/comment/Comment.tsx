@@ -1,27 +1,43 @@
 import React from "react";
-import { FaStar } from "react-icons/fa";
+import { FaStar, FaRegStar } from "react-icons/fa";
+import Image from 'next/image';
 
-const Comment: React.FC = () => {
+interface TPComment {
+    name: string, date: string, body: string, score: number
+}
+
+
+
+const Comment = ({ name, date, body, score }: TPComment) => {
+    console.log(score)
+
     return (
         <section className="font-shabnam flex border-b border-[rgba(0,0,0,0.218)] mt-4 gap-[25px] items-center pb-[25px]">
-            <img src="/images/shahin.jpg" className="w-[60px] h-[60px] rounded-full" alt="" />
+            <Image
+                src="/images/shahin.jpg"
+                width={60}
+                height={60}
+                className="rounded-full"
+                alt="User profile"
+            />
             <div>
                 <div className="flex items-baseline justify-between">
                     <div className="flex gap-[5px] items-baseline">
-                        <strong>shahin</strong>
-                        <p>۲۸ آذر ۱۴۰۱</p>
+                        <strong>{name}</strong>
+                        <p>{date}</p>
                     </div>
                     <div className="flex gap-1 text-orange-500">
-                        <FaStar />
-                        <FaStar />
-                        <FaStar />
-                        <FaStar />
-                        <FaStar />
+                        {new Array(score).fill(0).map((item, index) => (
+                            <FaStar key={index} />
+                        ))}
+                        {new Array(5 - score).fill(0).map((item, index) => (
+                            <FaRegStar key={index} />
+                        ))}
+
                     </div>
                 </div>
                 <p className="mb-0.5 mt-[10px]">
-                    قهوه بسیار خوش عطر و طعمیه…کاش کم کم مدل های کپسول ها رو متنوع تر
-                    کنید.
+                    {body}
                 </p>
             </div>
         </section>

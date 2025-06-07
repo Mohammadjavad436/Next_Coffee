@@ -1,10 +1,15 @@
 import Comment from "@/components/modules/comment/Comment";
 import CommentForm from "./CommentForm";
+import { TProductDetail } from "./Details";
 
-const Comments: React.FC = () => {
+interface CommentsProps {
+    allProductComments: TProductDetail;
+}
+
+const Comments = ({ allProductComments }: CommentsProps) => {
     return (
         <div>
-            <p>نظرات (7) :</p>
+            <p>نظرات ({allProductComments.comments.length}) :</p>
             <hr />
 
             <main className="flex gap-[50px]">
@@ -14,15 +19,13 @@ const Comments: React.FC = () => {
                         ده -10- عددی
                     </p>
                     <div>
-                        <Comment />
-                        <Comment />
-                        <Comment />
-                        <Comment />
-                        <Comment />
+                        {allProductComments.comments.map((commentData) => (
+                            <Comment key={commentData._id} score={commentData.score} body={commentData.body} date={commentData.date} name={commentData.email} />
+                        ))}
                     </div>
                 </div>
                 <div className="w-1/2">
-                    <CommentForm />
+                    <CommentForm productID={allProductComments._id} />
                 </div>
             </main>
         </div>

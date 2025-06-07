@@ -1,6 +1,42 @@
+import showSwal from "@/utility/helper";
+import { useState } from "react";
 import { IoMdStar } from "react-icons/io";
 
-const CommentForm: React.FC = () => {
+
+interface TPCommentForm {
+    productID: string
+
+}
+
+const CommentForm = ({ productID }: TPCommentForm) => {
+    const [body, setBody] = useState('')
+    const [email, setEmail] = useState('')
+    const [username, setUsername] = useState('')
+    const [score, setScore] = useState<number>(5)
+
+    const handleChangeScore = (NumberScore: number) => {
+        setScore(NumberScore)
+        showSwal('امتیاز شما با موفقیت ثبت شد', 'success', 'یستن')
+
+    }
+
+    const submitButton = async () => {
+        const comment = { username, body, email, score, productID }
+
+        const dateComment = await fetch('/api/comments', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(comment),
+        })
+
+        const res = await dateComment.json()
+        console.log(res)
+        if (dateComment.ok)
+            showSwal('امتیاز شما با موفقیت ثبت شد', 'success', 'یستن')
+    }
+
     return (
         <div className="w-full">
             <p className="text-sm font-bold h-[30px]">دیدگاه خود را بنویسید</p>
@@ -11,11 +47,11 @@ const CommentForm: React.FC = () => {
             <div className="flex gap-3.5 items-baseline">
                 <p className="relative -bottom-[3px]">امتیاز شما :</p>
                 <div className="flex gap-0.5 pt-0.5 rtl text-lg text-gray-500">
-                    <IoMdStar className="hover:text-orange-500" />
-                    <IoMdStar className="hover:text-orange-500" />
-                    <IoMdStar className="hover:text-orange-500" />
-                    <IoMdStar className="hover:text-orange-500" />
-                    <IoMdStar className="hover:text-orange-500" />
+                    <IoMdStar className="hover:text-orange-500" onClick={() => handleChangeScore(5)} />
+                    <IoMdStar className="hover:text-orange-500" onClick={() => handleChangeScore(4)} />
+                    <IoMdStar className="hover:text-orange-500" onClick={() => handleChangeScore(3)} />
+                    <IoMdStar className="hover:text-orange-500" onClick={() => handleChangeScore(2)} />
+                    <IoMdStar className="hover:text-orange-500" onClick={() => handleChangeScore(1)} />
                 </div>
             </div>
             <div className="mt-8 grid gap-2.5 w-full">
@@ -29,6 +65,8 @@ const CommentForm: React.FC = () => {
                     cols={45}
                     rows={8}
                     required
+                    value={body}
+                    onChange={(e) => setBody(e.target.value)}
                     placeholder=""
                     className="rounded bg-white text-black border border-[rgba(103,103,103,0.34)] p-4 font-shabnam resize-none"
                 ></textarea>
@@ -42,6 +80,8 @@ const CommentForm: React.FC = () => {
                     <input
                         type="text"
                         className="bg-white text-black border border-[rgba(103,103,103,0.34)] w-full font-shabnam rounded p-3"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
                     />
                 </div>
                 <div className="mt-8 grid gap-2.5 w-full">
@@ -52,6 +92,8 @@ const CommentForm: React.FC = () => {
                     <input
                         type="email"
                         className="bg-white text-black border border-[rgba(103,103,103,0.34)] w-full font-shabnam rounded p-3"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                     />
                 </div>
             </div>
@@ -68,7 +110,7 @@ const CommentForm: React.FC = () => {
                     می‌نویسم.
                 </p>
             </div>
-            <button className="bg-[rgb(0,137,121)] px-5 py-3 cursor-pointer mt-8 border-0 transition-all duration-200 font-shabnam hover:bg-[rgb(113,29,28)]">
+            <button onClick={submitButton} className="bg-[rgb(0,137,121)] px-5 py-3 cursor-pointer mt-8 border-0 transition-all duration-200 font-shabnam hover:bg-[rgb(113,29,28)]">
                 ثبت
             </button>
         </div>
