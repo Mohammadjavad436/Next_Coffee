@@ -9,7 +9,7 @@ interface CommentsProps {
 const Comments = ({ allProductComments }: CommentsProps) => {
     return (
         <div>
-            <p>نظرات ({allProductComments.comments.length}) :</p>
+            <p>نظرات ({allProductComments.comments.filter((comment) => comment.isAccept).length}) :</p>
             <hr />
 
             <main className="flex gap-[50px]">
@@ -19,9 +19,9 @@ const Comments = ({ allProductComments }: CommentsProps) => {
                         ده -10- عددی
                     </p>
                     <div>
-                        {allProductComments.comments.map((commentData) => (
-                            <Comment key={commentData._id} score={commentData.score} body={commentData.body} date={commentData.date} name={commentData.email} />
-                        ))}
+                        {allProductComments.comments.map((commentData) =>
+                            commentData.isAccept && <Comment key={commentData._id} score={commentData.score} body={commentData.body} date={commentData.date} name={commentData.email} />
+                        )}
                     </div>
                 </div>
                 <div className="w-1/2">

@@ -9,7 +9,8 @@ interface TPComment {
 
 
 const Comment = ({ name, date, body, score }: TPComment) => {
-    console.log(score)
+    const today = new Date(date);
+    const persianDate = today.toLocaleDateString('fa-IR');
 
     return (
         <section className="font-shabnam flex border-b border-[rgba(0,0,0,0.218)] mt-4 gap-[25px] items-center pb-[25px]">
@@ -24,7 +25,7 @@ const Comment = ({ name, date, body, score }: TPComment) => {
                 <div className="flex items-baseline justify-between">
                     <div className="flex gap-[5px] items-baseline">
                         <strong>{name}</strong>
-                        <p>{date}</p>
+                        <p>{persianDate}</p>
                     </div>
                     <div className="flex gap-1 text-orange-500">
                         {new Array(score).fill(0).map((item, index) => (

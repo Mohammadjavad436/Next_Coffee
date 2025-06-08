@@ -8,6 +8,7 @@ interface IComment {
     score: number;
     date: Date;
     productID: Types.ObjectId;
+    isAccept: boolean
 }
 
 const schema = new Schema<IComment>({
@@ -36,6 +37,10 @@ const schema = new Schema<IComment>({
         type: Schema.Types.ObjectId,
         ref: "Product",
     },
+    isAccept: {
+        type: Boolean,
+        required: true
+    }
 });
 
 const Comment = mongoose.models.Comment || model<IComment>("Comment", schema);

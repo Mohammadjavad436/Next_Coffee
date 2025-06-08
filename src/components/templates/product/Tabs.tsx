@@ -11,6 +11,7 @@ interface TabsProps {
 }
 
 const Tabs = ({ productComments }: TabsProps) => {
+
     const [tab, setTab] = useState("description");
     return (
         <div data-aos="fade-left" className="relative p-[50px] pb-20 w-full">
@@ -69,7 +70,7 @@ const Tabs = ({ productComments }: TabsProps) => {
                         className="transition-all duration-300 text-gray-500 text-base relative pt-5 overflow-hidden text-ellipsis block cursor-pointer font-shabnam hover:text-black"
                     >
                         {" "}
-                        نظرات ({productComments.comments.length}){" "}
+                        نظرات ({productComments.comments.filter((comment) => comment.isAccept).length}){" "}
                     </label>
                 </li>
             </ul>

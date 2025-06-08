@@ -21,7 +21,7 @@ const CommentForm = ({ productID }: TPCommentForm) => {
     }
 
     const submitButton = async () => {
-        const comment = { username, body, email, score, productID }
+        const comment = { username, body, email, score, productID, isAccept: false }
 
         const dateComment = await fetch('/api/comments', {
             method: "POST",

@@ -10,10 +10,10 @@ export async function POST(req: Request) {
     try {
         connectToDB()
         const reqBody = await req.json()
-        const { username, body, email, score, productID } = reqBody
-        console.log(username, body, email, score, productID)
+        const { username, body, email, score, productID, isAccept } = reqBody
 
-        const comment = await CommentModel.create({ username, body, email, score, productID })
+
+        const comment = await CommentModel.create({ username, body, email, score, productID, isAccept })
 
 
 

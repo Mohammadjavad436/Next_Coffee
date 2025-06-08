@@ -13,6 +13,7 @@ export interface TComment {
     email: string;
     score: number;
     productID: string;
+    isAccept: boolean;
     date: string;
     __v: number;
 }
