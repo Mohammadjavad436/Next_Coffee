@@ -11,7 +11,7 @@ import { LuUser } from "react-icons/lu";
 
 
 interface TPNavbar {
-  userToken: string | undefined
+  userToken: string | undefined,
 }
 
 
