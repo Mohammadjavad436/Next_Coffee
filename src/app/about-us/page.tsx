@@ -13,7 +13,6 @@ const AboutUs = async () => {
     return (
         <>
             <Navbar userToken={userToken} />
-            {/* <Breadcrumb route={"درباره ما"} /> */}
             <div className={styles.container}>
                 <section>
                     <div>
